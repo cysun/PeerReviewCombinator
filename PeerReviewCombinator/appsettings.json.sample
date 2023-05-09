@@ -1,0 +1,9 @@
+{
+  "Settings": {
+    "RosterFile": "C:/Users/cysun/Downloads/2023-05-09T0915_Grades-CS_4962-A_Spring_2023.xlsx",
+    "InputFolder": "C:/Users/cysun/Downloads/Teamwork",
+    "OutputFile": "C:/Users/cysun/Downloads/Teamwork.xlsx",
+    "ExpectedColumns": [ "Students", "Participation", "Contribution", "Collaboration and Inclusion", "Initiative", "Comments" ],
+    "OptionalColumnCount": 1
+  }
+}
