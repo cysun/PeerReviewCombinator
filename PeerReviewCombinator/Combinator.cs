@@ -14,7 +14,7 @@ namespace PeerReviewCombinator
 
     public class Student
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Cin { get; set; }
     }
@@ -23,18 +23,19 @@ namespace PeerReviewCombinator
     {
         private readonly Settings _settings;
 
-        private readonly Dictionary<string, Student> _roster;
+        private readonly Dictionary<string, Student> _rosterById, _rosterByName;
 
         public Combinator(Settings settings)
         {
             _settings = settings;
-            _roster = new Dictionary<string, Student>();
+            _rosterById = new Dictionary<string, Student>();
+            _rosterByName = new Dictionary<string, Student>();
             loadRoster();
         }
 
         public void run()
         {
-            var colNames = new List<string>() { "AssesorId", "CIN" };
+            var colNames = new List<string>() { "Assessor", "AssessorId", "CIN" };
             colNames.AddRange(_settings.ExpectedColumns);
 
             using var excelWriter = new ExcelWriter(_settings.OutputFile, colNames);
@@ -44,7 +45,11 @@ namespace PeerReviewCombinator
             {
                 // The Canvas submission file has the following naming convention:
                 //     <FullName>_<UserId>_<SubmissionId>_<OriginalFileName>
-                var assessorId = Path.GetFileName(file).Split('_')[1];
+                // or if the submission is late:
+                //    <FullName>_LATE_<UserId>_<SubmissionId>_<OriginalFileName>
+                var tokens = Path.GetFileName(file).Split('_');
+                var assessorId = tokens[1];
+                if (assessorId == "LATE") assessorId = tokens[2];
                 Log.Debug("Assessor Id: {assessorId}", assessorId);
 
                 using var excelReader = new ExcelReader(file);
@@ -59,7 +64,7 @@ namespace PeerReviewCombinator
                     if (excelReader.EmptyCellCount() > _settings.OptionalColumnCount) continue;
 
                     var studentName = excelReader.Get(0);
-                    var newRow = new List<string>() { assessorId, _roster[studentName].Cin };
+                    var newRow = new List<string>() { _rosterById[assessorId].Name, assessorId, _rosterByName[studentName].Cin };
                     newRow.AddRange(excelReader.GetAll());
                     excelWriter.WriteRow(newRow);
                 }
@@ -75,13 +80,14 @@ namespace PeerReviewCombinator
             {
                 var student = new Student
                 {
-                    Id = int.Parse(excelReader.Get("ID")),
+                    Id = excelReader.Get("ID"),
                     Name = excelReader.Get("Student"),
                     Cin = excelReader.Get("SIS User ID")
                 };
-                _roster[student.Name] = student;
+                _rosterById[student.Id] = student;
+                _rosterByName[student.Name] = student;
             }
-            Log.Information("Loaded {n} students", _roster.Count);
+            Log.Information("Loaded {n} students", _rosterByName.Count);
         }
     }
 }

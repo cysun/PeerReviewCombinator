@@ -43,11 +43,14 @@ namespace Ascent.Helpers
         {
             if (++_currentRowIndex >= RowCount) return false;
 
+            var row = _sheet.GetRow(_currentRowIndex);
+            if (row == null) return false; // Some rows got deleted but are still counted in PhysicalNumberOfRows
+
             _currentEmptyCellCount = 0;
             for (int i = 0; i < ColCount; ++i)
             {
                 // FormatCellValue() always returns a string (i.e. never returns null)
-                _currentRow[i] = _dataFormatter.FormatCellValue(_sheet.GetRow(_currentRowIndex).GetCell(i)).Trim();
+                _currentRow[i] = _dataFormatter.FormatCellValue(row.GetCell(i)).Trim();
                 if (_currentRow[i] == "")
                     ++_currentEmptyCellCount;
             }
