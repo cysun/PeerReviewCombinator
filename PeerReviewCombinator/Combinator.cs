@@ -43,6 +43,8 @@ namespace PeerReviewCombinator
             var files = Directory.GetFiles(_settings.InputFolder);
             foreach (var file in files)
             {
+                Log.Information("Processing {file}", file);
+
                 // The Canvas submission file has the following naming convention:
                 //     <FullName>_<UserId>_<SubmissionId>_<OriginalFileName>
                 // or if the submission is late:
@@ -64,6 +66,9 @@ namespace PeerReviewCombinator
                     if (excelReader.EmptyCellCount() > _settings.OptionalColumnCount) continue;
 
                     var studentName = excelReader.Get(0);
+                    if (string.IsNullOrWhiteSpace(studentName))
+                        continue;
+
                     var newRow = new List<string>() { _rosterById[assessorId].Name, assessorId, _rosterByName[studentName].Cin };
                     newRow.AddRange(excelReader.GetAll());
                     excelWriter.WriteRow(newRow);
