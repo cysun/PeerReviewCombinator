@@ -3,7 +3,7 @@
     "RosterFile": "C:/Users/cysun/Downloads/Grades-CS_4962-A_Spring_2023.xlsx",
     "InputFolder": "C:/Users/cysun/Downloads/Teamwork",
     "OutputFile": "C:/Users/cysun/Downloads/Teamwork.xlsx",
-    "ExpectedColumns": [ "Students", "Participation", "Contribution", "Collaboration and Inclusion", "Initiative", "Comments" ],
+    "ExpectedColumns": [ "Student", "Participation", "Contribution", "Collaboration and Inclusion", "Initiative", "Comments" ],
     "OptionalColumnCount": 1
   }
 }

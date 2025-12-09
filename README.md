@@ -15,7 +15,7 @@ Copy `appsettings.json.sample` to `appsettings.json` and change the following se
 - `RosterFile` - The class roster. This can be downloaded from Canvas using the Export
   Grade Book function. The exported file is actually a CSV file - it needs to converted
   into a proper Excel file with a couple of rows removed ("points possible" and "Test
-  Student"). We need this file to get the campus ids of the students.
+  Student"). We need this file to get the Canvas ids of the students.
 - `InputFolder` - This is where the downloaded spreadsheets are.
 - `OutpuFile` - The combined spreadsheet.
 - `ExpectedColumns` - The expected columns in the spreadsheets.

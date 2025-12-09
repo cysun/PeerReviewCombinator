@@ -45,11 +45,14 @@ namespace PeerReviewCombinator
             {
                 Log.Information("Processing {file}", file);
 
+                var filename = Path.GetFileName(file);
+                if (!filename.EndsWith(".xlsx")) continue;
+                
                 // The Canvas submission file has the following naming convention:
                 //     <FullName>_<UserId>_<SubmissionId>_<OriginalFileName>
                 // or if the submission is late:
                 //    <FullName>_LATE_<UserId>_<SubmissionId>_<OriginalFileName>
-                var tokens = Path.GetFileName(file).Split('_');
+                var tokens = filename.Split('_');
                 var assessorId = tokens[1];
                 if (assessorId == "LATE") assessorId = tokens[2];
                 Log.Debug("Assessor Id: {assessorId}", assessorId);
