@@ -10,6 +10,7 @@ namespace PeerReviewCombinator
         public string OutputFile { get; set; }
         public string[] ExpectedColumns { get; set; }
         public int OptionalColumnCount { get; set; }
+        public Dictionary<string, string> AlternativeNames { get; set; }
     }
 
     public class Student
@@ -71,7 +72,9 @@ namespace PeerReviewCombinator
                     var studentName = excelReader.Get(0);
                     if (string.IsNullOrWhiteSpace(studentName))
                         continue;
-
+                    else if(!_rosterByName.ContainsKey(studentName))
+                        studentName = _settings.AlternativeNames.ContainsKey(studentName) ? _settings.AlternativeNames[studentName] : studentName;
+                    
                     var newRow = new List<string>() { _rosterById[assessorId].Name, assessorId, _rosterByName[studentName].Cin };
                     newRow.AddRange(excelReader.GetAll());
                     excelWriter.WriteRow(newRow);

@@ -4,6 +4,10 @@
     "InputFolder": "C:/Users/cysun/Downloads/Teamwork",
     "OutputFile": "C:/Users/cysun/Downloads/Teamwork.xlsx",
     "ExpectedColumns": [ "Student", "Participation", "Contribution", "Collaboration and Inclusion", "Initiative", "Comments" ],
-    "OptionalColumnCount": 1
+    "OptionalColumnCount": 1,
+        "AlternativeNames": {
+          "Sun, Chengyu": "Sun, Steve",
+          "Steve, Sun": "Sun, Chengyu"
+        }
   }
 }
